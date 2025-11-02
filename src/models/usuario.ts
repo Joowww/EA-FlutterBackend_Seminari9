@@ -1,4 +1,3 @@
-//crear un modelo usuario con los atributos id, username, gmail, password y bithrday
 import mongoose, { Schema, model, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -9,6 +8,7 @@ export interface IUsuario {
     gmail: string;
     password: string;
     birthday: Date;
+    rol : string;
     comparePassword(candidatePassword: string): Promise<boolean>;
     isModified(path: string): boolean;
     }
@@ -20,6 +20,7 @@ const usuarioSchema = new Schema<IUsuario>({
     //pone unique para que no se repita el correo ni el username entre todos los usuarios de la base de datos
     password: { type: String, required: true },
     birthday: { type: Date, required: true },
+    rol: { type: String, required: true, enum: ['user', 'admin'], default: 'user' }
 }, {
     timestamps: false,
     versionKey: false
@@ -50,4 +51,3 @@ usuarioSchema.methods.comparePassword = async function (candidatePassword: strin
 export const Usuario = model<IUsuario>('Usuario', usuarioSchema);
 //exporto el modelo usuario
 export default Usuario;
-
